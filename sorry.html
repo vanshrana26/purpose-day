@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Purpose Day - Shruti</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,Arial;}
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:18px;
+  overflow:hidden;
+  background: linear-gradient(120deg,#fff0f6,#f3e8ff,#fff7e7);
+}
+
+/* floating bg */
+.glow{
+  position:absolute;
+  width:320px;height:320px;
+  border-radius:50%;
+  filter:blur(70px);
+  opacity:.6;
+  z-index:-2;
+  animation: float 8s ease-in-out infinite alternate;
+}
+.glow.one{background:#ff8fb1;top:10%;left:5%;}
+.glow.two{background:#b08cff;bottom:10%;right:5%;animation-delay:1.5s;}
+@keyframes float{from{transform:translate(0,0);}to{transform:translate(30px,-35px);}}
+
+/* flowers */
+.flower{
+  position:absolute;
+  top:-10vh;
+  font-size:22px;
+  opacity:.8;
+  z-index:-1;
+  animation: fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translateY(-10vh) rotate(0deg);}
+  100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+}
+
+/* card */
+.card{
+  width:100%;
+  max-width:650px;
+  padding:30px 22px;
+  text-align:center;
+  border-radius:28px;
+  background:rgba(255,255,255,.45);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 18px 70px rgba(0,0,0,.15);
+  animation: enter 1s ease;
+}
+@keyframes enter{
+  from{opacity:0;transform:translateY(35px) scale(.95);}
+  to{opacity:1;transform:translateY(0) scale(1);}
+}
+.card img{
+  width:150px;
+  border-radius:22px;
+  box-shadow:0 10px 35px rgba(0,0,0,.15);
+  margin-bottom:15px;
+}
+h1{font-size:2.3rem;font-weight:900;color:#ff2e63;}
+.sub{color:#333;margin:6px 0 18px;font-size:1.1rem;font-weight:600;}
+.msg{color:#444;font-size:1.05rem;line-height:1.8;}
+.tag{
+  display:inline-block;
+  margin-top:14px;
+  padding:10px 16px;
+  border-radius:18px;
+  background:rgba(255,46,99,.12);
+  border:1px solid rgba(255,46,99,.25);
+  font-weight:800;
+  color:#ff174d;
+}
+.q{margin-top:22px;font-size:1.15rem;font-weight:800;color:#222;}
+
+.btns{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;}
+button{
+  border:none;cursor:pointer;
+  padding:13px 26px;
+  border-radius:35px;
+  font-size:1rem;
+  font-weight:800;
+  transition:.3s;
+  min-width:150px;
+}
+.yes{background:linear-gradient(135deg,#ff2e63,#ff5b8a);color:white;box-shadow:0 12px 30px rgba(255,46,99,.25);}
+.no{background:rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.15);}
+button:hover{transform:scale(1.05);}
+
+.small{
+  margin-top:16px;
+  display:none;
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.75);
+  border:1px solid rgba(255,255,255,.8);
+  animation: pop .4s ease;
+}
+@keyframes pop{from{opacity:0;transform:scale(.92);}to{opacity:1;transform:scale(1);}}
+
+/* popup start */
+.popup-bg{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;justify-content:center;align-items:center;
+  z-index:50;padding:18px;
+}
+.popup{
+  width:100%;max-width:420px;
+  background:rgba(255,255,255,.95);
+  padding:26px 20px;
+  border-radius:25px;
+  text-align:center;
+  box-shadow:0 18px 70px rgba(0,0,0,.3);
+  animation: popin .6s ease;
+}
+@keyframes popin{from{opacity:0;transform:translateY(35px) scale(.9);}to{opacity:1;transform:translateY(0) scale(1);}}
+.popup h2{color:#ff2e63;font-size:1.5rem;font-weight:900;margin-bottom:10px;}
+.popup p{color:#444;font-size:1.05rem;line-height:1.6;margin-bottom:16px;}
+
+/* yes popup */
+.yes-bg{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
+  display:flex;justify-content:center;align-items:center;
+  z-index:60;padding:18px;
+  opacity:0;pointer-events:none;transition:.4s;
+}
+.yes-bg.active{opacity:1;pointer-events:auto;}
+.yes-box{
+  width:100%;max-width:460px;
+  background:rgba(255,255,255,.95);
+  border-radius:25px;
+  padding:26px 20px;
+  text-align:center;
+  box-shadow:0 25px 80px rgba(0,0,0,.35);
+  transform:translateY(35px) scale(.95);
+  opacity:0;transition:.5s;
+  position:relative;
+}
+.yes-bg.active .yes-box{transform:translateY(0) scale(1);opacity:1;}
+.close{
+  position:absolute;top:12px;right:16px;
+  font-size:22px;font-weight:900;
+  cursor:pointer;color:#ff2e63;
+}
+.yes-box h2{color:#ff2e63;font-size:1.55rem;font-weight:900;}
+.yes-box img{width:140px;margin:12px auto;border-radius:22px;display:block;}
+.yes-box p{font-size:1.05rem;color:#333;line-height:1.7;margin-top:10px;}
+
+/* music btn */
+.music{
+  position:fixed;bottom:18px;right:18px;
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.8);
+  padding:12px 18px;
+  border-radius:30px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  z-index:10;
+}
+
+/* mobile */
+@media(max-width:600px){
+  h1{font-size:2rem;}
+  .card{padding:24px 16px;}
+  .btns{flex-direction:column;}
+  button{width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<audio id="music" loop>
+  <source src="bgmusic.mp3" type="audio/mpeg">
+</audio>
+
+<!-- start popup -->
+<div class="popup-bg" id="startPopup">
+  <div class="popup">
+    <h2>For Shruti</h2>
+    <p>This page is only for you.<br>Just open it once.</p>
+    <button class="yes" onclick="startSite()">Start</button>
+  </div>
+</div>
+
+<!-- yes popup -->
+<div class="yes-bg" id="yesPopup">
+  <div class="yes-box">
+    <div class="close" onclick="closeYes()">✖</div>
+    <h2>Thank You Shruti</h2>
+    <img src="love.gif" alt="love">
+    <p>
+      You are my peace, my happiness.<br><br>
+      I promise I will never repeat my mistake again.<br><br>
+      <b>Sorry from your Billu.</b>
+    </p>
+    <button class="yes" onclick="closeYes()">Okay</button>
+  </div>
+</div>
+
+<!-- main card -->
+<div class="card">
+  <img src="cat.gif" alt="cute">
+
+  <h1>Shruti</h1>
+  <div class="sub">Happy Purpose Day</div>
+
+  <div class="msg">
+    I know I made mistakes... and I regret them deeply.<br>
+    You are the most important person in my life.<br><br>
+    Please forgive me, Shruti.
+  </div>
+
+  <div class="tag">Sorry from your Billu</div>
+
+  <div class="q">Will you forgive me?</div>
+
+  <div class="btns">
+    <button class="yes" onclick="openYes()">Yes</button>
+    <button class="no" onclick="noClicked()">No</button>
+  </div>
+
+  <div class="small" id="smallMsg"></div>
+</div>
+
+<div class="music" onclick="toggleMusic()">🎵 Music</div>
+
+<script>
+const startPopup = document.getElementById("startPopup");
+const yesPopup = document.getElementById("yesPopup");
+const smallMsg = document.getElementById("smallMsg");
+const music = document.getElementById("music");
+
+let playing = false;
+
+function startSite(){
+  startPopup.style.display="none";
+  music.volume = 0.7;
+  music.play();
+  playing = true;
+}
+
+function toggleMusic(){
+  if(playing){
+    music.pause();
+    playing=false;
+  } else {
+    music.play();
+    playing=true;
+  }
+}
+
+function openYes(){
+  yesPopup.classList.add("active");
+}
+
+function closeYes(){
+  yesPopup.classList.remove("active");
+}
+
+function noClicked(){
+  smallMsg.style.display="block";
+  smallMsg.innerHTML="Please Shruti... ek chance aur.";
+}
+
+/* flowers */
+const flowers=["🌸","🌷","💐"];
+function createFlower(){
+  const f=document.createElement("div");
+  f.classList.add("flower");
+  f.innerHTML=flowers[Math.floor(Math.random()*flowers.length)];
+  f.style.left=Math.random()*100+"vw";
+  f.style.animationDuration=(Math.random()*4+7)+"s";
+  f.style.fontSize=(Math.random()*12+18)+"px";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),11000);
+}
+setInterval(createFlower,900);
+</script>
+
+</body>
+</html>
